@@ -1,0 +1,46 @@
+buildscript {
+    ext {
+        applicationName = "swagger-codegen-example"
+        basePackage = "com.example"
+
+        lombokVersion = "1.16.22"
+        springBootVersion = "2.0.5.RELEASE"
+        springfoxSwaggerVersion = "2.9.2"
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: "java"
+apply plugin: "idea"
+apply plugin: "org.springframework.boot"
+apply plugin: "io.spring.dependency-management"
+
+group = basePackage
+version = "0.0.1-SNAPSHOT"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+apply from: "gradle/swagger.gradle"
+
+dependencies {
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    compile("io.springfox:springfox-swagger-ui:${springfoxSwaggerVersion}") {
+        exclude module: "springfox-spring-web"
+    }
+    compile("org.springframework.boot:spring-boot-starter-web")
+
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+
+    testCompile "org.springframework.boot:spring-boot-starter-test"
+}
